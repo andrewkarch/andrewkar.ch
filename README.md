@@ -1,4 +1,14 @@
-# andrewkar.ch
-My personal website.
+# Personal Site
 
-Designed to look like an old computer terminal.
+### Template for new projects
+- [ ] SSL
+- [ ] Create GUI version
+
+
+```
+<p>
+	<a href='LINK HERE'>TITLE</a> - DESCRIPTION
+</p>
+<br>
+<br>
+```
