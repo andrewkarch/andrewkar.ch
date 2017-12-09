@@ -60,6 +60,10 @@ p {
     color: #DDDDDD;
     text-shadow: 0 0 5px #DDDDDD;
 }
+#stackoverflow {
+    color: #F58225;
+    text-shadow: 0 0 5px #F58225;
+}
 .blinking {
     -webkit-animation-name: blinker;
     -webkit-animation-duration: 1s;
