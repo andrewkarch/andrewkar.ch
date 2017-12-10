@@ -1,0 +1,218 @@
+<head>
+    <script type="text/javascript">
+        // RequestAnimFrame: a browser API for getting smooth animations
+        //http://cssdeck.com/labs/html5-canvas-particles-web-matrix
+        //http://diveintohtml5.info/table-of-contents.html#canvas
+
+        particles = [];
+
+        function getRandomColor() {
+            var letters = '0123456789ABCDEF';
+            var color = '#';
+            for (var i = 0; i < 6; i++) {
+                color += letters[Math.floor(Math.random() * 16)];
+            }
+            return color;
+        }
+
+        window.requestAnimFrame = (function() {
+            return window.requestAnimationFrame ||
+                window.webkitRequestAnimationFrame ||
+                window.mozRequestAnimationFrame ||
+                window.oRequestAnimationFrame ||
+                window.msRequestAnimationFrame ||
+                function(callback) {
+                    window.setTimeout(callback, 1000 / 60);
+                };
+        })();
+
+
+        window.onload = init;
+
+        function init() {
+            var canvas = document.getElementById("mainCanvas");
+            var ctx = canvas.getContext("2d");
+            var W = window.innerWidth,
+                H = window.innerHeight;
+            canvas.width = W * 1.1;
+            canvas.height = H * 1.1;
+            var particleCount = 150,
+                minDist = 25,
+                dist;
+            // Function to paint the canvas black
+            function paintCanvas() {}
+
+            function createLineObjects() {
+
+            }
+
+            function Particle(xPoint, yPoint, color=getRandomColor()) {
+                // Position them randomly on the canvas
+                // Math.random() generates a random value between 0
+                // and 1 so we will need to multiply that with the
+                // canvas width and height.
+                this.x = xPoint;
+                this.y = yPoint;
+                // Now the radius of the particles. I want all of
+                // them to be equal in size so no Math.random() here..
+                this.radius = .1;
+                this.color = color;
+                this.opacity = 1;
+                // This is the method that will draw the Particle on the
+                // canvas. It is using the basic fillStyle, then we start
+                // the path and after we use the `arc` function to
+                // draw our circle. The `arc` function accepts four
+                // parameters in which first two depicts the position
+                // of the center point of our arc as x and y coordinates.
+                // The third value is for radius, then start angle,
+                // end angle and finally a boolean value which decides
+                // whether the arc is to be drawn in counter clockwise or
+                // in a clockwise direction. False for clockwise.
+                this.draw = function() {
+                    ctx.fillStyle = color;
+                    ctx.beginPath();
+                    ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2, false);
+                    // Fill the color to the arc that we just created
+                    ctx.fill();
+                }
+            }
+            var windowWidth = window.innerWidth;
+            var windowHeight = window.innerHeight;
+            initX = 10
+            initY = 10
+            side = minDist - 1
+            //for(var i = 0; i < particleCount; i++) {
+            while (initX <= innerWidth && initY <= innerHeight) {
+                particles.push(new Particle(initX, initY)); // 0
+                particles.push(new Particle(initX + side, initY)); //1
+                particles.push(new Particle(initX - (side / 2), initY + (side * .866))); //2
+                particles.push(new Particle(initX + (side * 1.5), initY + (side * .866))); //3
+                particles.push(new Particle(initX, initY + (2 * (side * .866)))); //4
+                particles.push(new Particle(initX + side, initY + (2 * (side * .866)))); //5
+                initX += side * 3
+                if (initX >= innerWidth) {
+                    initX = 10
+                    initY += (Math.sqrt(3) * side)
+                }
+            }
+            //particles.push(new Particle(initX+side, initY+side));
+
+            // Function to draw everything on the canvas that we'll use when
+            // animating the whole scene.
+            function draw() {
+
+                // Call the paintCanvas function here so that our canvas
+                // will get re-painted in each next frame
+                //paintCanvas();
+
+                // Call the function that will draw the balls using a loop
+                for (var i = 0; i < particles.length; i++) {
+                    p = particles[i];
+                    p.draw();
+                }
+
+                //Finally call the update function
+                drawLines();
+            }
+            // Give every particle some life
+            function drawLines() {
+
+                // In this function, we are first going to update every
+                // particle's position according to their velocities
+                for (var i = 0; i < particles.length; i++) {
+                    p = particles[i];
+
+
+                    // We don't want to make the particles leave the
+                    // area, so just change their position when they
+                    // touch the walls of the window
+                    if (p.x + p.radius > W)
+                        p.x = p.radius;
+
+                    else if (p.x - p.radius < 0) {
+                        p.x = W - p.radius;
+                    }
+
+                    if (p.y + p.radius > H)
+                        p.y = p.radius;
+
+                    else if (p.y - p.radius < 0) {
+                        p.y = H - p.radius;
+                    }
+
+                    // Now we need to make them attract each other
+                    // so first, we'll check the distance between
+                    // them and compare it to the minDist we have
+                    // already set
+
+                    // We will need another loop so that each
+                    // particle can be compared to every other particle
+                    // except itself
+                    for (var j = i + 1; j < particles.length; j++) {
+                        p2 = particles[j];
+                        distance(p, p2, p.opacity);
+                    }
+
+                }
+            }
+
+            // Distance calculator between two particles
+            function distance(p1, p2, opacity) {
+                var dist,
+                    dx = p1.x - p2.x,
+                    dy = p1.y - p2.y;
+
+                dist = Math.sqrt(dx * dx + dy * dy);
+
+                // Draw the line when distance is smaller
+                // then the minimum distance
+                if (dist <= minDist) {
+
+                    // Draw the line
+                    ctx.beginPath();
+                    ctx.strokeStyle = "rgba(255,255,255,"+ opacity +")";
+                    //ctx.strokeStyle = getRandomColor();
+                    ctx.moveTo(p1.x, p1.y);
+                    ctx.lineTo(p2.x, p2.y);
+                    ctx.lineTo(p2.x, p2.y);
+                    ctx.lineWidth = 1;
+                    ctx.stroke();
+                    ctx.closePath();
+                }
+            }
+
+            // Start the main animation loop using requestAnimFrame
+            function animloop() {
+                draw();
+                requestAnimFrame(animloop);
+            }
+
+            animloop();
+        }
+    </script>
+    <style type="text/css">
+        #mainCanvas {
+            height: 110%;
+            width: 110%;
+            left: -5%;
+            background-color: darkgrey;
+            margin: 0px;
+            padding: 0px;
+        }
+
+        html,
+        body {
+            background-size: cover;
+            overflow: hidden;
+            margin: 0px;
+            padding: 0px;
+        }
+        #fds {
+            height: 400px;
+            background-color: lime;
+        }
+    </style>
+</head>
+<canvas id="mainCanvas"></canvas>
+<div id="fds"></div>
+<div
