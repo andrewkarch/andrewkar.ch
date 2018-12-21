@@ -1,0 +1,13 @@
+/* TEAM */
+Your title: Andrew Karch
+Site: http://andrewkar.ch
+Twitter: @AndrewKarch
+Location: Indiana, USA
+
+/* THANKS */
+Name: garryts over at DeviantArt for the Wallpaper! http://garryts.deviantart.com
+
+/* SITE */
+Last update: 2016/02/14
+Standards: HTML5, CSS3, JavaScript
+Components: None. Just simple code.
