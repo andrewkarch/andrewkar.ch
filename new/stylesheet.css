@@ -1,0 +1,36 @@
+@import url(https://fonts.googleapis.com/css?family=Arimo:700);
+@import url(https://fonts.googleapis.com/css?family=Quicksand);
+
+body {
+    background: #DDD;
+    color: #333;
+    font-family: "Quicksand";
+    line-height: 1;
+}
+a {
+    color: #7284A8;
+    text-decoration: none;  
+    -o-transition:.5s;
+    -ms-transition:.5s;
+    -moz-transition:.5s;
+    -webkit-transition:.5s;
+    transition:.5s;
+    font-weight: 500;
+}
+a:hover {color: #7CDEDC;}
+h2 {font-family: "Arimo";}
+#twitter {color: #00ACED;}
+#github {color: #FF7D40;}
+#linkedin {color: #007bb6;}
+#email {color: #333;}
+
+@media (min-width: 768px) {
+    #terminal {
+        margin: 0;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        width: 750px;
+    }
+}
